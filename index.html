@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxRente — Support</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      color: #1a1a1c;
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #1c1c2e;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: #DA3A45; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .logo-name { font-size: 22px; font-weight: 700; color: #fff; }
+    .logo-name .dot { color: #DA3A45; }
+    .logo-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    nav { display: flex; gap: 6px; flex-wrap: wrap; }
+    nav a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+    .lang-bar {
+      background: #f5f4f0;
+      border-bottom: 1px solid #e6e4de;
+      padding: 10px 32px;
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 5px 16px; border-radius: 20px;
+      border: 1px solid #d8d5cf;
+      background: #fff; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; color: #5a5a5e;
+    }
+    .lang-btn.active { background: #DA3A45; color: #fff; border-color: #DA3A45; }
+
+    .container { max-width: 760px; margin: 0 auto; padding: 48px 32px; }
+
+    section { margin-bottom: 56px; }
+
+    h2 {
+      font-size: 24px; font-weight: 700;
+      color: #1a1a1c; margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #eeebe5;
+    }
+
+    .faq-item { margin-bottom: 22px; }
+    .faq-q { font-size: 15px; font-weight: 700; color: #1a1a1c; margin-bottom: 6px; }
+    .faq-a { font-size: 14px; color: #5a5a5e; line-height: 1.65; }
+
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 20px;
+      background: #f8f7f4;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 14px; color: #3a3a3d;
+    }
+    .contact-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .contact-item a { color: #DA3A45; text-decoration: none; font-weight: 600; }
+    .contact-item a:hover { text-decoration: underline; }
+
+    .privacy-item {
+      display: flex; gap: 14px;
+      margin-bottom: 18px;
+      font-size: 14px; color: #3a3a3d; line-height: 1.65;
+    }
+    .privacy-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+    footer {
+      background: #1c1c2e;
+      color: rgba(255,255,255,0.4);
+      padding: 20px 32px;
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+
+    @media (max-width: 600px) {
+      header { padding: 16px 20px; }
+      .lang-bar { padding: 10px 20px; }
+      .container { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">L</div>
+    <div>
+      <div class="logo-name">LuxRente<span class="dot">.</span></div>
+      <div class="logo-sub">Luxemburg Renten-Rechner</div>
+    </div>
+  </a>
+  <nav>
+    <a href="#support">Support</a>
+    <a href="#contact">Contact</a>
+    <a href="#privacy">Privacy</a>
+  </nav>
+</header>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('de', this)">DE</button>
+  <button class="lang-btn" onclick="setLang('en', this)">EN</button>
+  <button class="lang-btn" onclick="setLang('fr', this)">FR</button>
+</div>
+
+<div class="container">
+
+  <!-- SUPPORT -->
+  <section id="support">
+
+    <div data-lang="de" class="active">
+      <h2>Häufige Fragen</h2>
+      <div class="faq-item">
+        <div class="faq-q">Was berechnet LuxRente?</div>
+        <div class="faq-a">LuxRente liest Ihren CCSS-Extrait de carrière und berechnet Ihre bis heute erworbenen Rentenansprüche, eine Projektion der Altersrente bis 65, Ihre Frühverrentungsberechtigung (57/60) inklusive EU-Auslandszeiten nach VO 883/2004, den möglichen AMVP-Steuerabzug sowie die Rentenwirkung freiwilliger Beiträge.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Werden meine Daten gespeichert oder weitergegeben?</div>
+        <div class="faq-a">Nein. LuxRente führt alle Berechnungen ausschließlich lokal auf Ihrem iPhone durch. Es werden keine Daten an Server übertragen, kein Account ist erforderlich, und keine Drittanbieter haben Zugriff auf Ihre Renteninformationen.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Wie importiere ich meinen CCSS-Extrait de carrière?</div>
+        <div class="faq-a">Öffnen Sie LuxRente und tippen Sie auf „Extrait einlesen". Sie können Ihren Extrait als Foto (JPEG/PNG) oder als PDF importieren. Den Extrait erhalten Sie im CCSS-Online-Portal (selfservice.ccss.lu) oder per Post von der CCSS.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Warum weicht meine Schätzung vom CCSS-Bescheid ab?</div>
+        <div class="faq-a">LuxRente liefert eine Schätzung auf Basis Ihrer Karrieredaten und aktueller Berechnungsformeln. Abweichungen können durch Gehaltsannahmen, zukünftige Indexanpassungen oder noch nicht gemeldete Beitragszeiten entstehen. Für verbindliche Auskünfte wenden Sie sich bitte an die CCSS oder einen qualifizierten Rentenberater.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Was ist die Anteilsrente (EU Art. 52)?</div>
+        <div class="faq-a">Wer in mehreren EU-Ländern gearbeitet hat, kann statt der nationalen Luxemburger Rente eine Anteilsrente (pro-rata) nach EU-Verordnung 883/2004 Art. 52 beanspruchen. LuxRente berechnet beide Varianten und zeigt, welche für Sie günstiger ist.</div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">What does LuxRente calculate?</div>
+        <div class="faq-a">LuxRente reads your CCSS extrait de carrière and calculates your accrued pension entitlements to date, a projection of your retirement pension up to age 65, your early retirement eligibility (age 57/60) including EU periods abroad under Regulation 883/2004, the potential AMVP tax deduction, and the pension impact of voluntary contributions.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is my data stored or shared?</div>
+        <div class="faq-a">No. LuxRente performs all calculations exclusively on your iPhone. No data is transmitted to any server, no account is required, and no third parties have access to your pension information.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do I import my CCSS extrait de carrière?</div>
+        <div class="faq-a">Open LuxRente and tap "Read extrait". You can import your extrait as a photo (JPEG/PNG) or as a PDF. You can obtain your extrait via the CCSS online portal (selfservice.ccss.lu) or by post from the CCSS.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Why may my estimate differ from the official CCSS statement?</div>
+        <div class="faq-a">LuxRente provides an estimate based on your career data and current calculation formulas. Differences may arise from salary assumptions, future index adjustments, or contribution periods not yet reported. For binding information, please contact the CCSS or a qualified pension advisor.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the proportional pension (EU Art. 52)?</div>
+        <div class="faq-a">Anyone who has worked in multiple EU countries may be entitled to a proportional (pro-rata) pension under EU Regulation 883/2004 Art. 52 instead of the national Luxembourg pension. LuxRente calculates both options and shows which is more favourable for you.</div>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <h2>Questions fréquentes</h2>
+      <div class="faq-item">
+        <div class="faq-q">Que calcule LuxRente ?</div>
+        <div class="faq-a">LuxRente lit votre extrait de carrière CCSS et calcule vos droits à la retraite acquis à ce jour, une projection de votre pension de vieillesse jusqu'à 65 ans, votre éligibilité à la retraite anticipée (57/60 ans) incluant les périodes à l'étranger (UE, règl. 883/2004), la déduction fiscale AMVP possible, ainsi que l'impact des cotisations volontaires sur votre pension.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Mes données sont-elles stockées ou partagées ?</div>
+        <div class="faq-a">Non. LuxRente effectue tous les calculs exclusivement sur votre iPhone. Aucune donnée n'est transmise à un serveur, aucun compte n'est nécessaire, et aucun tiers n'a accès à vos informations de retraite.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Comment importer mon extrait de carrière CCSS ?</div>
+        <div class="faq-a">Ouvrez LuxRente et appuyez sur « Lire l'extrait ». Vous pouvez importer votre extrait en photo (JPEG/PNG) ou en PDF. Vous pouvez obtenir votre extrait via le portail en ligne de la CCSS (selfservice.ccss.lu) ou par courrier auprès de la CCSS.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Pourquoi mon estimation peut-elle différer du relevé CCSS officiel ?</div>
+        <div class="faq-a">LuxRente fournit une estimation basée sur vos données de carrière et les formules de calcul en vigueur. Des écarts peuvent survenir en raison des hypothèses salariales, des ajustements d'index futurs ou des périodes de cotisation non encore déclarées. Pour des informations contraignantes, veuillez contacter la CCSS ou un conseiller en retraite qualifié.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Qu'est-ce que la pension proportionnelle (UE art. 52) ?</div>
+        <div class="faq-a">Toute personne ayant travaillé dans plusieurs pays de l'UE peut avoir droit, à la place de la pension nationale luxembourgeoise, à une pension proportionnelle (pro rata) selon le règlement UE 883/2004 art. 52. LuxRente calcule les deux options et indique laquelle vous est la plus favorable.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+
+    <div data-lang="de" class="active">
+      <h2>Kontakt</h2>
+      <div class="contact-item">
+        <span class="contact-icon">✉️</span>
+        <div>Bei Fragen oder Problemen: <a href="mailto:towoywod@gmail.com">towoywod@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">🐙</span>
+        <div>Quellcode und weitere Informationen: <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <h2>Contact</h2>
+      <div class="contact-item">
+        <span class="contact-icon">✉️</span>
+        <div>Questions or issues: <a href="mailto:towoywod@gmail.com">towoywod@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">🐙</span>
+        <div>Source code and further information: <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <h2>Contact</h2>
+      <div class="contact-item">
+        <span class="contact-icon">✉️</span>
+        <div>Questions ou problèmes : <a href="mailto:towoywod@gmail.com">towoywod@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">🐙</span>
+        <div>Code source et informations complémentaires : <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PRIVACY -->
+  <section id="privacy">
+
+    <div data-lang="de" class="active">
+      <h2>Datenschutz</h2>
+      <div class="privacy-item">
+        <span class="privacy-icon">🔒</span>
+        <div><strong>Lokale Verarbeitung.</strong> Alle Berechnungen werden ausschließlich auf Ihrem Gerät durchgeführt. Es gibt keinen Server, keinen Cloud-Speicher und keinen Account.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">📵</span>
+        <div><strong>Keine Datenübertragung.</strong> LuxRente überträgt keine persönlichen Daten, keine Rentendaten und keine Gerätedaten an Dritte.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">🗑️</span>
+        <div><strong>Datenlöschung.</strong> Alle in der App gespeicherten Daten können jederzeit durch Deinstallation der App vollständig gelöscht werden.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">⚖️</span>
+        <div><strong>DSGVO.</strong> LuxRente wurde mit Datenschutz by Design entwickelt und entspricht den Anforderungen der europäischen Datenschutz-Grundverordnung (DSGVO).</div>
+      </div>
+    </div>
+
+    <div data-lang="en">
+      <h2>Privacy</h2>
+      <div class="privacy-item">
+        <span class="privacy-icon">🔒</span>
+        <div><strong>Local processing.</strong> All calculations are performed exclusively on your device. There is no server, no cloud storage, and no account required.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">📵</span>
+        <div><strong>No data transmission.</strong> LuxRente does not transmit any personal data, pension data, or device data to third parties.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">🗑️</span>
+        <div><strong>Data deletion.</strong> All data stored in the app can be completely deleted at any time by uninstalling the app.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">⚖️</span>
+        <div><strong>GDPR.</strong> LuxRente was developed with Privacy by Design and complies with the requirements of the European General Data Protection Regulation (GDPR).</div>
+      </div>
+    </div>
+
+    <div data-lang="fr">
+      <h2>Confidentialité</h2>
+      <div class="privacy-item">
+        <span class="privacy-icon">🔒</span>
+        <div><strong>Traitement local.</strong> Tous les calculs sont effectués exclusivement sur votre appareil. Il n'y a pas de serveur, pas de stockage cloud et aucun compte n'est nécessaire.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">📵</span>
+        <div><strong>Aucune transmission de données.</strong> LuxRente ne transmet aucune donnée personnelle, aucune donnée de retraite ni aucune donnée d'appareil à des tiers.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">🗑️</span>
+        <div><strong>Suppression des données.</strong> Toutes les données stockées dans l'application peuvent être complètement supprimées à tout moment en désinstallant l'application.</div>
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-icon">⚖️</span>
+        <div><strong>RGPD.</strong> LuxRente a été développé selon le principe de la protection des données dès la conception (Privacy by Design) et est conforme aux exigences du Règlement général sur la protection des données (RGPD).</div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <p>LuxRente ist eine Schätzung und kein offizieller CCSS- oder CNAP-Bescheid. / LuxRente is an estimate and not an official CCSS or CNAP statement. / LuxRente est une estimation et non un avis officiel de la CCSS ou du CNAP.</p>
+  <p style="margin-top:8px">© 2026 LuxRente</p>
+</footer>
+
+<script>
+  function setLang(lang, btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('[data-lang="' + lang + '"]').forEach(el => el.classList.add('active'));
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
