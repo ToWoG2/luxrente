@@ -108,6 +108,46 @@
     [data-lang] { display: none; }
     [data-lang].active { display: block; }
 
+    .preview-wrap {
+      background: #f8f7f4;
+      border-bottom: 2px solid #eeebe5;
+      padding: 32px;
+    }
+    .preview-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .app-gif {
+      width: 200px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .preview-text-block p {
+      font-size: 15px;
+      color: #3a3a3d;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .onepager-btn {
+      display: inline-block;
+      background: #DA3A45;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .onepager-btn:hover { background: #c0313b; }
+    @media (max-width: 600px) {
+      .preview-inner { flex-direction: column; }
+      .app-gif { width: 100%; max-width: 280px; }
+    }
+
     @media (max-width: 600px) {
       header { padding: 16px 20px; }
       .lang-bar { padding: 10px 20px; }
@@ -136,6 +176,26 @@
   <button class="lang-btn active" onclick="setLang('de', this)">DE</button>
   <button class="lang-btn" onclick="setLang('en', this)">EN</button>
   <button class="lang-btn" onclick="setLang('fr', this)">FR</button>
+</div>
+
+<div class="preview-wrap">
+  <div class="preview-inner">
+    <img src="marketing/0630.gif" alt="LuxRente App Demo" class="app-gif">
+    <div class="preview-text-block">
+      <div data-lang="de" class="active">
+        <p>Alle Funktionen auf einen Blick — als druckfertiger One-Pager auf Deutsch, Français und English.</p>
+        <a href="marketing/LuxRente%20-%20One-Pager-print-de.html" target="_blank" class="onepager-btn">One-Pager öffnen →</a>
+      </div>
+      <div data-lang="en">
+        <p>All features at a glance — as a print-ready one-pager in Deutsch, Français and English.</p>
+        <a href="marketing/LuxRente%20-%20One-Pager-print-en.html" target="_blank" class="onepager-btn">Open one-pager →</a>
+      </div>
+      <div data-lang="fr">
+        <p>Toutes les fonctionnalités en un coup d'œil — en format one-pager prêt à imprimer en Deutsch, Français et English.</p>
+        <a href="marketing/LuxRente%20-%20One-Pager-print-fr.html" target="_blank" class="onepager-btn">Ouvrir le one-pager →</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container">
@@ -226,10 +286,6 @@
         <span class="contact-icon">✉️</span>
         <div>Bei Fragen oder Problemen: <a href="mailto:nerve-shuffle.2h@icloud.com">nerve-shuffle.2h@icloud.com</a></div>
       </div>
-      <div class="contact-item">
-        <span class="contact-icon">🐙</span>
-        <div>Quellcode und weitere Informationen: <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
-      </div>
     </div>
 
     <div data-lang="en">
@@ -238,10 +294,6 @@
         <span class="contact-icon">✉️</span>
         <div>Questions or issues: <a href="mailto:nerve-shuffle.2h@icloud.com">nerve-shuffle.2h@icloud.com</a></div>
       </div>
-      <div class="contact-item">
-        <span class="contact-icon">🐙</span>
-        <div>Source code and further information: <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
-      </div>
     </div>
 
     <div data-lang="fr">
@@ -249,10 +301,6 @@
       <div class="contact-item">
         <span class="contact-icon">✉️</span>
         <div>Questions ou problèmes : <a href="mailto:nerve-shuffle.2h@icloud.com">nerve-shuffle.2h@icloud.com</a></div>
-      </div>
-      <div class="contact-item">
-        <span class="contact-icon">🐙</span>
-        <div>Code source et informations complémentaires : <a href="https://github.com/ToWoG2/retirement-vite" target="_blank">github.com/ToWoG2/retirement-vite</a></div>
       </div>
     </div>
 
