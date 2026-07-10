@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxRente — Voluntary CCSS Contributions vs. ETF Investing: Full Analysis</title>
+<meta name="description" content="The full data behind LuxRente's ROI comparison: 27 scenarios across three career lengths, three salary levels, and three payout horizons, plus methodology and pros/cons beyond the raw returns.">
+<style>
+  :root {
+    --page:        #ffffff;
+    --surface:     #f8f7f4;
+    --surface-2:   #f5f4f0;
+    --ink:         #1a1a1c;
+    --ink-2:       #4a4a4d;
+    --ink-muted:   #8a8a8d;
+    --hairline:    #eeebe5;
+    --border:      #eeebe5;
+    --series-pension: #DA3A45;
+    --series-etf:     #0082B3;
+    --good:        #2E8B57;
+    --critical:    #8a6d3b;
+    --good-bg:     rgba(46,139,87,0.12);
+    --critical-bg: rgba(138,109,59,0.14);
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+  }
+  a { color: var(--series-pension); }
+
+  header.site {
+    background: #1c1c2e;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: #DA3A45; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .logo-name { font-size: 22px; font-weight: 700; color: #fff; }
+  .logo-name .dot { color: #DA3A45; }
+  .logo-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  nav.sitenav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav.sitenav a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  nav.sitenav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 2px solid var(--hairline);
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--series-pension);
+    font-weight: 700;
+  }
+  h1 {
+    color: var(--ink);
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .dek {
+    font-size: 1.02rem;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  h2 {
+    color: var(--ink);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.6rem;
+  }
+  section { margin-bottom: 3rem; }
+  p { margin: 0 0 0.9rem; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  .section-intro { color: var(--ink-2); font-size: 0.98rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem 1.5rem;
+  }
+  .grid-assumptions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.1rem 1.5rem;
+    margin-top: 1rem;
+  }
+  .assumption dt {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .assumption dd {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .callout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: var(--surface-2);
+    border-left: 3px solid var(--series-pension);
+    border-radius: 6px;
+    padding: 1.1rem 1.3rem;
+    margin: 1.2rem 0 0;
+  }
+  .callout .mark { font-size: 1.1rem; line-height: 1; color: var(--series-pension); font-weight: 700; }
+  .callout p { color: var(--ink-2); font-size: 0.94rem; }
+  .callout strong { color: var(--ink); }
+
+  table.afford { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.92rem; }
+  table.afford th, table.afford td { padding: 0.5rem 0.75rem; text-align: right; font-variant-numeric: tabular-nums; }
+  table.afford th:first-child, table.afford td:first-child { text-align: left; }
+  table.afford thead th { color: var(--ink-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; border-bottom: 1px solid var(--hairline); }
+  table.afford tbody tr { border-bottom: 1px solid var(--hairline); }
+  table.afford tbody tr:last-child { border-bottom: none; }
+
+  .scenario-block { margin-top: 2.75rem; }
+  .scenario-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 0.9rem;
+  }
+  .scenario-head .meta { font-size: 0.85rem; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--page); }
+  table.results { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 720px; }
+  table.results th, table.results td { padding: 0.6rem 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+  table.results th:first-child, table.results td:first-child,
+  table.results th:nth-child(2), table.results td:nth-child(2) { text-align: left; }
+  table.results thead th { color: var(--ink-muted); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; border-bottom: 1px solid var(--hairline); background: var(--surface-2); position: sticky; top: 0; }
+  table.results tbody tr { border-bottom: 1px solid var(--hairline); }
+  table.results tbody tr:last-child { border-bottom: none; }
+  table.results tbody tr:hover { background: var(--surface-2); }
+  .num-diff { font-weight: 700; }
+  .flag { font-size: 0.72rem; color: var(--ink-muted); display: block; margin-top: 0.1rem; font-weight: 400; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 99px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .pill.good { background: var(--good-bg); color: var(--good); }
+  .pill.critical { background: var(--critical-bg); color: var(--critical); }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+
+  .chart-card { margin-top: 1.1rem; }
+  .chart-legend {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .swatch.pension { background: var(--series-pension); }
+  .legend-line { width: 16px; height: 0; border-top: 2px dashed var(--series-etf); flex: none; }
+
+  .barrow {
+    display: grid;
+    grid-template-columns: 130px 1fr 64px;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    position: relative;
+  }
+  .barrow .label { font-size: 0.82rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .bartrack { position: relative; height: 20px; background: var(--surface-2); border-radius: 4px; overflow: visible; }
+  .barfill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--series-pension); min-width: 2px; }
+  .barfill.below { background: var(--series-etf); }
+  .refline { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--series-etf); }
+  .barrow .value { font-size: 0.82rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #1c1c2e;
+    color: #fff;
+    font-size: 0.76rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 5px;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    max-width: 220px;
+    line-height: 1.4;
+  }
+  .tooltip.show { opacity: 1; }
+
+  .takeaways { display: flex; flex-direction: column; gap: 1.1rem; }
+  .takeaway { display: flex; gap: 0.9rem; }
+  .takeaway .idx {
+    font-size: 1.1rem;
+    color: var(--series-pension);
+    font-weight: 800;
+    flex: none;
+    width: 1.6rem;
+  }
+  .takeaway p { color: var(--ink-2); font-size: 0.95rem; margin: 0; }
+  .takeaway strong { color: var(--ink); }
+
+  .longevity-callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--series-pension);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    margin-top: 1.4rem;
+  }
+  .longevity-callout h3 { margin-bottom: 0.5rem; }
+  .longevity-callout p { color: var(--ink-2); font-size: 0.92rem; margin-bottom: 0.7rem; }
+  .longevity-callout p:last-child { margin-bottom: 0; }
+  .longevity-stats {
+    display: flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+    margin: 0.9rem 0;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .longevity-stat { min-width: 140px; }
+  .longevity-stat .n { font-size: 1.2rem; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink); display: block; }
+  .longevity-stat .l { font-size: 0.75rem; color: var(--ink-muted); }
+
+  .proscons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1.2rem; }
+  .proscons-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem 1.4rem;
+  }
+  .proscons-col.pension { border-top: 3px solid var(--series-pension); }
+  .proscons-col.etf { border-top: 3px solid var(--series-etf); }
+  .proscons-col h3 { font-size: 1rem; margin-bottom: 1rem; }
+  .proscons-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; padding: 0; margin: 0; }
+  .proscons-item { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.86rem; color: var(--ink-2); line-height: 1.5; }
+  .proscons-tag {
+    flex: none;
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 800;
+    margin-top: 0.1rem;
+  }
+  .proscons-tag.con { background: var(--critical-bg); color: var(--critical); }
+  .proscons-tag.pro { background: var(--good-bg); color: var(--good); }
+  .proscons-item strong { color: var(--ink); }
+  @media (max-width: 620px) { .proscons-grid { grid-template-columns: 1fr; } }
+
+  footer.methodology {
+    border-top: 2px solid var(--hairline);
+    padding-top: 2rem;
+    margin-top: 3rem;
+  }
+  footer.methodology h3 { margin-bottom: 0.9rem; }
+  footer.methodology ul { margin: 0 0 1.4rem; padding-left: 1.2rem; color: var(--ink-2); font-size: 0.88rem; }
+  footer.methodology li { margin-bottom: 0.55rem; }
+  footer.methodology li:last-child { margin-bottom: 0; }
+  .disclaimer { font-size: 0.82rem; color: var(--ink-muted); font-style: italic; margin-top: 1.6rem; }
+
+  footer.site {
+    background: #1c1c2e;
+    color: rgba(255,255,255,0.4);
+    padding: 20px 32px;
+    font-size: 11px;
+    line-height: 1.7;
+    text-align: center;
+  }
+  footer.site a { color: rgba(255,255,255,0.55); }
+
+  @media (max-width: 620px) {
+    header.site { padding: 16px 20px; }
+    .wrap { padding: 2.25rem 1.25rem 3.5rem; }
+    h1 { font-size: 1.55rem; }
+    .barrow { grid-template-columns: 96px 1fr 54px; }
+    table.results { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <a class="logo" href="../index.html">
+    <div class="logo-icon">L</div>
+    <div>
+      <div class="logo-name">LuxRente<span class="dot">.</span></div>
+      <div class="logo-sub">Luxemburg Renten-Rechner</div>
+    </div>
+  </a>
+  <nav class="sitenav">
+    <a href="etf-vs-freiwillige-beitraege.html">ETF vs. CCSS</a>
+    <a href="../index.html#support">Support</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Full Analysis &middot; Not Financial Advice</span>
+    <h1>Voluntary CCSS Contributions vs. ETF Investing</h1>
+    <p class="dek">The complete data behind the <a href="etf-vs-freiwillige-beitraege.html">summary page</a>: a rough ROI comparison for three careers of different lengths and three salary levels (2&times;, 3&times; and 4&times; the qualified-worker social minimum wage), across three payout horizons — what happens if you top up your Luxembourg pension assessment base to the legal ceiling every year, versus investing the same after&#8209;tax cash in an accumulating Irish&#8209;domiciled ETF instead.</p>
+  </header>
+
+  <section id="assumptions">
+    <h2>Assumptions</h2>
+    <p class="section-intro">Every figure on this page follows from these inputs. Change any one and the comparison moves — treat this as a rough, directional estimate, not a projection of your actual pension.</p>
+    <div class="card">
+      <dl class="grid-assumptions" id="assumptionsGrid"></dl>
+    </div>
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><strong>Affordability check first.</strong> "Top up to the ceiling" is a mathematical upper bound, not a savings plan most people can fund. Salary levels below are multiples of the <strong>qualified-worker SSM</strong> (&euro;3,325.59/month, June 2026); the voluntary-contribution ceiling itself stays pegged to the <strong>non&#8209;qualified SSM</strong> (&euro;2,771.33/month) &mdash; that's the CCSS's legal basis for the ceiling (BBG), regardless of the earner's own qualification. The voluntary contribution required to reach that ceiling is:</p>
+    </div>
+    <table class="afford">
+      <thead><tr><th>Salary</th><th>Gross annual salary</th><th>Voluntary contribution (yr&nbsp;1)</th><th>As % of gross salary</th></tr></thead>
+      <tbody id="affordBody"></tbody>
+    </table>
+    <p class="section-intro" style="margin-top:0.9rem;">At 2&times;SSM the top-up still takes 17% of gross salary &mdash; a real commitment, but a plausible one. By 4&times;SSM the earner is already close to the ceiling on their actual salary, so the top-up shrinks to under 1% of income.</p>
+  </section>
+
+  <div id="scenarioSections"></div>
+
+  <section id="takeaways">
+    <h2>What the numbers say</h2>
+    <div class="takeaways" id="takeawaysList"></div>
+    <div class="longevity-callout" id="longevityCallout"></div>
+  </section>
+
+  <section id="proscons">
+    <h2>Beyond the IRR</h2>
+    <p class="section-intro">An effective annual return doesn't capture everything that's different between these two paths. Some of it favours the voluntary top-up, some favours the ETF, independent of which one wins on the numbers above.</p>
+    <div class="proscons-grid">
+      <div class="proscons-col pension">
+        <h3>Voluntary CCSS top-up</h3>
+        <ul class="proscons-list">
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Illiquid until pension age (or early retirement at 57/60 under conditions) &mdash; no access for emergencies, opportunities, or a change of plans.</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Only a surviving spouse benefits (widow's/widower's pension). Other heirs get nothing, and if death occurs before retirement, most of the accumulated rights are simply lost &mdash; nothing has actually accumulated the way it has in a portfolio.</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Depends on Luxembourg continuing to honour pension terms on this basis, and on no adverse change to the rules along the way. Luxembourg holds a AAA rating and one of the strongest public-finance positions in the EU, so this is a low-probability risk, not a high one &mdash; but the claim still can't be diversified the way an ETF's underlying holdings can, and the actuarial parameters in this model already shift gradually through 2052 by design.</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Zero flexibility in payout &mdash; a fixed monthly stream, no restructuring around your actual needs or timing.</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>Pays for life, however long that turns out to be &mdash; the structural reason it wins the 10-year-career scenarios, and increasingly the 20-year-career ones too as the payout horizon lengthens (see below).</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>Statutory indexation (2.5% / 18 months) is a legal guarantee, not a market outcome.</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>No ongoing management and no behavioural risk &mdash; nothing to panic-sell, and the easiest outcome for a less financially engaged surviving spouse, who simply keeps receiving payments.</li>
+        </ul>
+      </div>
+      <div class="proscons-col etf">
+        <h3>ETF investing</h3>
+        <ul class="proscons-list">
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Full market risk &mdash; a crash has no floor, unlike the pension's guaranteed minimum.</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Sequence-of-returns risk in the withdrawal phase: this model assumes a flat 7%/year, but real markets don't compound smoothly. A downturn early in retirement forces selling more shares at depressed prices, which can permanently impair a portfolio even when the long-run average holds up &mdash; the single biggest simplification in this analysis.</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>The whole tax advantage in this comparison leans on Luxembourg's private capital-gains exemption (&gt;6 months holding) staying in force for 20&ndash;40 years &mdash; current law, not a permanent guarantee. The ETF-side mirror of "trust Luxembourg to honour pension terms."</li>
+          <li class="proscons-item"><span class="proscons-tag con">&minus;</span>Requires the discipline to keep investing for decades without diverting the money, and requires estimating your own safe withdrawal rate correctly &mdash; a problem the pension solves for you automatically.</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>Fully liquid and accessible at any time.</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>Inheritable by anyone you choose, in full &mdash; the direct opposite of the survivor-pension limitation.</li>
+          <li class="proscons-item"><span class="proscons-tag pro">+</span>Can be de-risked (a glide path into safer assets) as retirement nears, which a fixed pension formula can't do.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="methodology">
+    <h3>Methodology &amp; caveats</h3>
+    <ul>
+      <li><strong>Engine.</strong> Pension figures use the exact CNAP formula from the LuxRente app's pension engine (flat-rate + proportional components, minimum/maximum pension, actuarial parameters through 2052), with the voluntary assessment base recomputed dynamically each year rather than fixed, to model "always top up to the ceiling."</li>
+      <li><strong>Tax.</strong> Luxembourg Class&nbsp;1 (single) brackets from the official taxx.lu table, plus the 7%/9% Employment Fund surcharge. Brackets are indexed forward at the same rate as wages to avoid artificial bracket creep over a 30&#8209;40 year horizon &mdash; Luxembourg does this periodically in practice, not automatically.</li>
+      <li><strong>The core asymmetry.</strong> Voluntary CCSS contributions are pre&#8209;tax (Sonderausgaben) but the resulting pension is fully taxable on withdrawal. ETF contributions come from already&#8209;taxed salary, but gains on an accumulating fund held privately &gt;6 months are currently tax&#8209;exempt in Luxembourg. Both paths in this analysis start from the identical after&#8209;tax cash outlay so the comparison isolates this asymmetry rather than just the return assumption.</li>
+      <li><strong>Withdrawal matching.</strong> The ETF path withdraws the same after&#8209;tax spending power that the voluntary top&#8209;up would have added to the pension each year &mdash; not the gross pension difference. Matching the gross figure instead would favour the ETF further, since its withdrawals face no further tax; matching net spending power is the fairer test.</li>
+      <li><strong>IRR.</strong> Solved from yearly cash flows: outflow = after&#8209;tax opportunity cost of the voluntary contribution during the working years; inflow = the net (after&#8209;tax) pension differential during the payout years, or the ETF's actual withdrawals plus its terminal balance. A quick internal check: the ETF path's own IRR comes out within ~0.1&nbsp;pt of the 7% input return whenever the pot survives &mdash; as it should by construction.</li>
+      <li><strong>Longevity.</strong> Payout horizons up to 40 years are included specifically because life expectancy keeps rising &mdash; someone retiring at 60&ndash;65 and living to 100 needs 35&ndash;40 years of income, not 20. Even 40 years is still a bound, though: a real CCSS pension is a lifetime annuity with no cap at all, so it keeps paying past whatever horizon is shown here, while an ETF pot does not.</li>
+      <li><strong>Not modelled.</strong> Health and long&#8209;term&#8209;care deductions on the pension (2.8%/1.4%), the mandatory 8.5% contribution (identical in every scenario, so it cancels out of the comparison), and mortality risk itself (these are point estimates for a given payout length, not a probability-weighted life expectancy).</li>
+      <li><strong>SSM basis.</strong> Two different SSM figures are in play, deliberately. Salary levels (2&times;/3&times;/4&times;) are multiples of the <em>qualified</em>-worker SSM, &euro;3,325.59/month (June 2026 tranche) &mdash; the more representative reference wage for this kind of earner. The voluntary-contribution ceiling (BBG, 5&times;SSM) stays legally pegged to the <em>non&#8209;qualified</em> SSM, &euro;2,771.33/month, per Art.&nbsp;172 CSS &mdash; that ceiling doesn't move with the earner's own qualification, so it isn't rebased here either.</li>
+    </ul>
+    <p class="disclaimer">Illustrative only &mdash; not a CCSS or CNAP assessment, not tax or investment advice.</p>
+  </footer>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script id="roiData" type="application/json">{"meta":{"ASOF":2026,"SSM_MONTHLY_2026":2771.33,"SSM_QUALIFIE_MONTHLY_2026":3325.59,"CURRENT_IDX":992.24,"MR":2085,"VOL_RATE":0.17,"IDX_PCT":2.5,"TR_MON":18,"FAC_G":0.01,"INFLATION":0.022,"ETF_RETURN":0.07,"RETIRE_AGE":65,"note":"IRR cash flows: outflow = after-tax opportunity cost of voluntary contribution; inflow = after-tax pension differential (pension path) or matching ETF withdrawal + terminal pot value (ETF path). Salary multiples apply to SSM qualifié; the voluntary-contribution ceiling (BBG) is legally pegged to SSM non-qualifié regardless of the earner's qualification."},"results":[{"startAge":35,"multiple":2,"careerLength":30,"payoutYears":20,"y65":2056,"baseM":7659,"enhM":14037,"diffM":6378,"diffMReal":3320,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":560910,"totalContribReal":405451,"totalInvestedNom":326842,"totalInvestedReal":236256,"totalTaxSaved":234068,"totalNetDiffNom":1039035,"totalNetDiffReal":438122,"potAtRetNom":1016952,"potAtRetReal":529387,"potEndNom":1737162,"potEndReal":598062,"depletedAtYear":null,"irrPension":0.0468,"irrEtf":0.071,"firstYrContrib":14699,"lastYrContrib":23499,"firstYrInvestable":8565},{"startAge":35,"multiple":2,"careerLength":30,"payoutYears":30,"y65":2056,"baseM":7659,"enhM":14037,"diffM":6378,"diffMReal":3320,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":560910,"totalContribReal":405451,"totalInvestedNom":326842,"totalInvestedReal":236256,"totalTaxSaved":234068,"totalNetDiffNom":1701817,"totalNetDiffReal":640370,"potAtRetNom":1016952,"potAtRetReal":529387,"potEndNom":2446184,"potEndReal":677464,"depletedAtYear":null,"irrPension":0.0565,"irrEtf":0.0707,"firstYrContrib":14699,"lastYrContrib":23499,"firstYrInvestable":8565},{"startAge":35,"multiple":2,"careerLength":30,"payoutYears":40,"y65":2056,"baseM":7659,"enhM":14037,"diffM":6378,"diffMReal":3320,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":560910,"totalContribReal":405451,"totalInvestedNom":326842,"totalInvestedReal":236256,"totalTaxSaved":234068,"totalNetDiffNom":2483894,"totalNetDiffReal":832334,"potAtRetNom":1016952,"potAtRetReal":529387,"potEndNom":3666418,"potEndReal":816827,"depletedAtYear":null,"irrPension":0.061,"irrEtf":0.0705,"firstYrContrib":14699,"lastYrContrib":23499,"firstYrInvestable":8565},{"startAge":35,"multiple":3,"careerLength":30,"payoutYears":20,"y65":2056,"baseM":10848,"enhM":14282,"diffM":3434,"diffMReal":1788,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":302029,"totalContribReal":218320,"totalInvestedNom":172761,"totalInvestedReal":124879,"totalTaxSaved":129268,"totalNetDiffNom":559482,"totalNetDiffReal":235912,"potAtRetNom":537536,"potAtRetReal":279821,"potEndNom":896487,"potEndReal":308639,"depletedAtYear":null,"irrPension":0.0476,"irrEtf":0.071,"firstYrContrib":7915,"lastYrContrib":12653,"firstYrInvestable":4527},{"startAge":35,"multiple":3,"careerLength":30,"payoutYears":30,"y65":2056,"baseM":10848,"enhM":14282,"diffM":3434,"diffMReal":1788,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":302029,"totalContribReal":218320,"totalInvestedNom":172761,"totalInvestedReal":124879,"totalTaxSaved":129268,"totalNetDiffNom":916366,"totalNetDiffReal":344816,"potAtRetNom":537536,"potAtRetReal":279821,"potEndNom":1240636,"potEndReal":343591,"depletedAtYear":null,"irrPension":0.0572,"irrEtf":0.0706,"firstYrContrib":7915,"lastYrContrib":12653,"firstYrInvestable":4527},{"startAge":35,"multiple":3,"careerLength":30,"payoutYears":40,"y65":2056,"baseM":10848,"enhM":14282,"diffM":3434,"diffMReal":1788,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":302029,"totalContribReal":218320,"totalInvestedNom":172761,"totalInvestedReal":124879,"totalTaxSaved":129268,"totalNetDiffNom":1337485,"totalNetDiffReal":448181,"potAtRetNom":537536,"potAtRetReal":279821,"potEndNom":1823658,"potEndReal":406286,"depletedAtYear":null,"irrPension":0.0616,"irrEtf":0.0704,"firstYrContrib":7915,"lastYrContrib":12653,"firstYrInvestable":4527},{"startAge":35,"multiple":4,"careerLength":30,"payoutYears":20,"y65":2056,"baseM":14037,"enhM":14527,"diffM":491,"diffMReal":255,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":43149,"totalContribReal":31190,"totalInvestedNom":23866,"totalInvestedReal":17251,"totalTaxSaved":19283,"totalNetDiffNom":79929,"totalNetDiffReal":33703,"potAtRetNom":74256,"potAtRetReal":38655,"potEndNom":118256,"potEndReal":40712,"depletedAtYear":null,"irrPension":0.0489,"irrEtf":0.071,"firstYrContrib":1131,"lastYrContrib":1808,"firstYrInvestable":625},{"startAge":35,"multiple":4,"careerLength":30,"payoutYears":30,"y65":2056,"baseM":14037,"enhM":14527,"diffM":491,"diffMReal":255,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":43149,"totalContribReal":31190,"totalInvestedNom":23866,"totalInvestedReal":17251,"totalTaxSaved":19283,"totalNetDiffNom":130914,"totalNetDiffReal":49261,"potAtRetNom":74256,"potAtRetReal":38655,"potEndNom":157925,"potEndReal":43737,"depletedAtYear":null,"irrPension":0.0584,"irrEtf":0.0706,"firstYrContrib":1131,"lastYrContrib":1808,"firstYrInvestable":625},{"startAge":35,"multiple":4,"careerLength":30,"payoutYears":40,"y65":2056,"baseM":14037,"enhM":14527,"diffM":491,"diffMReal":255,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":43149,"totalContribReal":31190,"totalInvestedNom":23866,"totalInvestedReal":17251,"totalTaxSaved":19283,"totalNetDiffNom":191077,"totalNetDiffReal":64028,"potAtRetNom":74256,"potAtRetReal":38655,"potEndNom":222536,"potEndReal":49578,"depletedAtYear":null,"irrPension":0.0627,"irrEtf":0.0704,"firstYrContrib":1131,"lastYrContrib":1808,"firstYrInvestable":625},{"startAge":45,"multiple":2,"careerLength":20,"payoutYears":20,"y65":2046,"baseM":4112,"enhM":7589,"diffM":3477,"diffMReal":2250,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":342460,"totalContribReal":277397,"totalInvestedNom":199552,"totalInvestedReal":161639,"totalTaxSaved":142909,"totalNetDiffNom":598721,"totalNetDiffReal":313961,"potAtRetNom":422160,"potAtRetReal":273186,"potEndNom":365189,"potEndReal":156291,"depletedAtYear":null,"irrPension":0.0565,"irrEtf":0.0707,"firstYrContrib":14699,"lastYrContrib":19769,"firstYrInvestable":8565},{"startAge":45,"multiple":2,"careerLength":20,"payoutYears":30,"y65":2046,"baseM":4112,"enhM":7589,"diffM":3477,"diffMReal":2250,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":342460,"totalContribReal":277397,"totalInvestedNom":199552,"totalInvestedReal":161639,"totalTaxSaved":142909,"totalNetDiffNom":979143,"totalNetDiffReal":458257,"potAtRetNom":422160,"potAtRetReal":273186,"potEndNom":161155,"potEndReal":55482,"depletedAtYear":null,"irrPension":0.0676,"irrEtf":0.0702,"firstYrContrib":14699,"lastYrContrib":19769,"firstYrInvestable":8565},{"startAge":45,"multiple":2,"careerLength":20,"payoutYears":40,"y65":2046,"baseM":4112,"enhM":7589,"diffM":3477,"diffMReal":2250,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":342460,"totalContribReal":277397,"totalInvestedNom":199552,"totalInvestedReal":161639,"totalTaxSaved":142909,"totalNetDiffNom":1427981,"totalNetDiffReal":595220,"potAtRetNom":422160,"potAtRetReal":273186,"potEndNom":-340600,"potEndReal":-94328,"depletedAtYear":34,"irrPension":0.0722,"irrEtf":null,"firstYrContrib":14699,"lastYrContrib":19769,"firstYrInvestable":8565},{"startAge":45,"multiple":3,"careerLength":20,"payoutYears":20,"y65":2046,"baseM":5850,"enhM":7722,"diffM":1872,"diffMReal":1212,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":184402,"totalContribReal":149368,"totalInvestedNom":105478,"totalInvestedReal":85439,"totalTaxSaved":78924,"totalNetDiffNom":301860,"totalNetDiffReal":158316,"potAtRetNom":223143,"potAtRetReal":144400,"potEndNom":223642,"potEndReal":95713,"depletedAtYear":null,"irrPension":0.0541,"irrEtf":0.0708,"firstYrContrib":7915,"lastYrContrib":10645,"firstYrInvestable":4527},{"startAge":45,"multiple":3,"careerLength":20,"payoutYears":30,"y65":2046,"baseM":5850,"enhM":7722,"diffM":1872,"diffMReal":1212,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":184402,"totalContribReal":149368,"totalInvestedNom":105478,"totalInvestedReal":85439,"totalTaxSaved":78924,"totalNetDiffNom":493498,"totalNetDiffReal":231006,"potAtRetNom":223143,"potAtRetReal":144400,"potEndNom":159234,"potEndReal":54820,"depletedAtYear":null,"irrPension":0.0654,"irrEtf":0.0703,"firstYrContrib":7915,"lastYrContrib":10645,"firstYrInvestable":4527},{"startAge":45,"multiple":3,"careerLength":20,"payoutYears":40,"y65":2046,"baseM":5850,"enhM":7722,"diffM":1872,"diffMReal":1212,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":184402,"totalContribReal":149368,"totalInvestedNom":105478,"totalInvestedReal":85439,"totalTaxSaved":78924,"totalNetDiffNom":719600,"totalNetDiffReal":300001,"potAtRetNom":223143,"potAtRetReal":144400,"potEndNom":-18038,"potEndReal":-4996,"depletedAtYear":39,"irrPension":0.0702,"irrEtf":0.07,"firstYrContrib":7915,"lastYrContrib":10645,"firstYrInvestable":4527},{"startAge":45,"multiple":4,"careerLength":20,"payoutYears":20,"y65":2046,"baseM":7589,"enhM":7856,"diffM":267,"diffMReal":173,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":26344,"totalContribReal":21339,"totalInvestedNom":14571,"totalInvestedReal":11803,"totalTaxSaved":11773,"totalNetDiffNom":43094,"totalNetDiffReal":22602,"potAtRetNom":30826,"potAtRetReal":19948,"potEndNom":27929,"potEndReal":11953,"depletedAtYear":null,"irrPension":0.0558,"irrEtf":0.0708,"firstYrContrib":1131,"lastYrContrib":1521,"firstYrInvestable":625},{"startAge":45,"multiple":4,"careerLength":20,"payoutYears":30,"y65":2046,"baseM":7589,"enhM":7856,"diffM":267,"diffMReal":173,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":26344,"totalContribReal":21339,"totalInvestedNom":14571,"totalInvestedReal":11803,"totalTaxSaved":11773,"totalNetDiffNom":70449,"totalNetDiffReal":32978,"potAtRetNom":30826,"potAtRetReal":19948,"potEndNom":14873,"potEndReal":5120,"depletedAtYear":null,"irrPension":0.067,"irrEtf":0.0702,"firstYrContrib":1131,"lastYrContrib":1521,"firstYrInvestable":625},{"startAge":45,"multiple":4,"careerLength":20,"payoutYears":40,"y65":2046,"baseM":7589,"enhM":7856,"diffM":267,"diffMReal":173,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":26344,"totalContribReal":21339,"totalInvestedNom":14571,"totalInvestedReal":11803,"totalTaxSaved":11773,"totalNetDiffNom":102723,"totalNetDiffReal":42826,"potAtRetNom":30826,"potAtRetReal":19948,"potEndNom":-18029,"potEndReal":-4993,"depletedAtYear":35,"irrPension":0.0716,"irrEtf":null,"firstYrContrib":1131,"lastYrContrib":1521,"firstYrInvestable":625},{"startAge":55,"multiple":2,"careerLength":10,"payoutYears":20,"y65":2036,"baseM":1674,"enhM":3117,"diffM":1442,"diffMReal":1160,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":157308,"totalContribReal":142487,"totalInvestedNom":91664,"totalInvestedReal":83027,"totalTaxSaved":65645,"totalNetDiffNom":333665,"totalNetDiffReal":217841,"potAtRetNom":134270,"potAtRetReal":108012,"potEndNom":-190531,"potEndReal":-101366,"depletedAtYear":12,"irrPension":0.0952,"irrEtf":null,"firstYrContrib":14699,"lastYrContrib":17047,"firstYrInvestable":8565},{"startAge":55,"multiple":2,"careerLength":10,"payoutYears":30,"y65":2036,"baseM":1674,"enhM":3117,"diffM":1442,"diffMReal":1160,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":157308,"totalContribReal":142487,"totalInvestedNom":91664,"totalInvestedReal":83027,"totalTaxSaved":65645,"totalNetDiffNom":542570,"totalNetDiffReal":316343,"potAtRetNom":134270,"potAtRetReal":108012,"potEndNom":-680810,"potEndReal":-291367,"depletedAtYear":12,"irrPension":0.1054,"irrEtf":null,"firstYrContrib":14699,"lastYrContrib":17047,"firstYrInvestable":8565},{"startAge":55,"multiple":2,"careerLength":10,"payoutYears":40,"y65":2036,"baseM":1674,"enhM":3117,"diffM":1442,"diffMReal":1160,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":157308,"totalContribReal":142487,"totalInvestedNom":91664,"totalInvestedReal":83027,"totalTaxSaved":65645,"totalNetDiffNom":788450,"totalNetDiffReal":409607,"potAtRetNom":134270,"potAtRetReal":108012,"potEndNom":-1699412,"potEndReal":-585066,"depletedAtYear":12,"irrPension":0.1087,"irrEtf":null,"firstYrContrib":14699,"lastYrContrib":17047,"firstYrInvestable":8565},{"startAge":55,"multiple":3,"careerLength":10,"payoutYears":20,"y65":2036,"baseM":2395,"enhM":3172,"diffM":777,"diffMReal":625,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":84705,"totalContribReal":76724,"totalInvestedNom":48451,"totalInvestedReal":43886,"totalTaxSaved":36254,"totalNetDiffNom":172291,"totalNetDiffReal":112453,"potAtRetNom":70972,"potAtRetReal":57092,"potEndNom":-91722,"potEndReal":-48797,"depletedAtYear":12,"irrPension":0.0932,"irrEtf":null,"firstYrContrib":7915,"lastYrContrib":9179,"firstYrInvestable":4527},{"startAge":55,"multiple":3,"careerLength":10,"payoutYears":30,"y65":2036,"baseM":2395,"enhM":3172,"diffM":777,"diffMReal":625,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":84705,"totalContribReal":76724,"totalInvestedNom":48451,"totalInvestedReal":43886,"totalTaxSaved":36254,"totalNetDiffNom":280447,"totalNetDiffReal":163450,"potAtRetNom":70972,"potAtRetReal":57092,"potEndNom":-338858,"potEndReal":-145022,"depletedAtYear":12,"irrPension":0.1036,"irrEtf":null,"firstYrContrib":7915,"lastYrContrib":9179,"firstYrInvestable":4527},{"startAge":55,"multiple":3,"careerLength":10,"payoutYears":40,"y65":2036,"baseM":2395,"enhM":3172,"diffM":777,"diffMReal":625,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":84705,"totalContribReal":76724,"totalInvestedNom":48451,"totalInvestedReal":43886,"totalTaxSaved":36254,"totalNetDiffNom":407746,"totalNetDiffReal":211735,"potAtRetNom":70972,"potAtRetReal":57092,"potEndNom":-853048,"potEndReal":-293683,"depletedAtYear":12,"irrPension":0.107,"irrEtf":null,"firstYrContrib":7915,"lastYrContrib":9179,"firstYrInvestable":4527},{"startAge":55,"multiple":4,"careerLength":10,"payoutYears":20,"y65":2036,"baseM":3117,"enhM":3228,"diffM":111,"diffMReal":89,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":12101,"totalContribReal":10961,"totalInvestedNom":6693,"totalInvestedReal":6063,"totalTaxSaved":5408,"totalNetDiffNom":23419,"totalNetDiffReal":15284,"potAtRetNom":9804,"potAtRetReal":7887,"potEndNom":-11847,"potEndReal":-6303,"depletedAtYear":12,"irrPension":0.0919,"irrEtf":null,"firstYrContrib":1131,"lastYrContrib":1311,"firstYrInvestable":625},{"startAge":55,"multiple":4,"careerLength":10,"payoutYears":30,"y65":2036,"baseM":3117,"enhM":3228,"diffM":111,"diffMReal":89,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":12101,"totalContribReal":10961,"totalInvestedNom":6693,"totalInvestedReal":6063,"totalTaxSaved":5408,"totalNetDiffNom":38185,"totalNetDiffReal":22246,"potAtRetNom":9804,"potAtRetReal":7887,"potEndNom":-44933,"potEndReal":-19230,"depletedAtYear":12,"irrPension":0.1024,"irrEtf":null,"firstYrContrib":1131,"lastYrContrib":1311,"firstYrInvestable":625},{"startAge":55,"multiple":4,"careerLength":10,"payoutYears":40,"y65":2036,"baseM":3117,"enhM":3228,"diffM":111,"diffMReal":89,"flooredBase":false,"flooredEnh":false,"cappedBase":false,"cappedEnh":false,"totalContribNom":12101,"totalContribReal":10961,"totalInvestedNom":6693,"totalInvestedReal":6063,"totalTaxSaved":5408,"totalNetDiffNom":55564,"totalNetDiffReal":28838,"potAtRetNom":9804,"potAtRetReal":7887,"potEndNom":-113846,"potEndReal":-39194,"depletedAtYear":12,"irrPension":0.1059,"irrEtf":null,"firstYrContrib":1131,"lastYrContrib":1311,"firstYrInvestable":625}]}</script>
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById('roiData').textContent);
+  const results = data.results;
+  const meta = data.meta;
+  const eur = (n, opts) => new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, ...opts }).format(n);
+  const eurK = (n) => (Math.abs(n) >= 100000 ? eur(Math.round(n/1000)*1000).replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1,') : eur(n));
+  const pct = (n, d=1) => n == null ? '—' : (n*100).toFixed(d) + '%';
+
+  const assumptions = [
+    ['SSM qualifié (salary basis)', eur(meta.SSM_QUALIFIE_MONTHLY_2026) + '/mo'],
+    ['SSM non-qualifié (ceiling basis)', eur(meta.SSM_MONTHLY_2026) + '/mo'],
+    ['Indexation', meta.IDX_PCT + '% / ' + meta.TR_MON + ' mo'],
+    ['Inflation (CPI)', (meta.INFLATION*100).toFixed(1) + '% p.a.'],
+    ['ETF return (nominal)', (meta.ETF_RETURN*100).toFixed(0) + '% p.a.'],
+    ['Voluntary rate', (meta.VOL_RATE*100).toFixed(0) + '%'],
+    ['Tax class', 'Class 1 (single)'],
+    ['ETF gains tax', 'exempt (>6mo, LU)'],
+    ['Retirement age', meta.RETIRE_AGE],
+  ];
+  document.getElementById('assumptionsGrid').innerHTML = assumptions.map(([k,v]) =>
+    `<div class="assumption"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
+  const multiples = [2, 3, 4];
+  document.getElementById('affordBody').innerHTML = multiples.map(m => {
+    const salary = m * meta.SSM_QUALIFIE_MONTHLY_2026 * 13;
+    const r = results.find(r => r.multiple === m && r.startAge === 35);
+    const pctSalary = r.firstYrContrib / salary;
+    return `<tr><td>${m}&times; SSM</td><td>${eur(salary)}</td><td>${eur(r.firstYrContrib)}</td><td style="font-weight:700;color:${pctSalary>0.4?'var(--critical)':'var(--ink)'}">${pct(pctSalary,1)}</td></tr>`;
+  }).join('');
+
+  const careers = [
+    { startAge: 35, length: 30, label: '30-year career', sub: 'starts at 35, retires at 65' },
+    { startAge: 45, length: 20, label: '20-year career', sub: 'starts at 45, retires at 65' },
+    { startAge: 55, length: 10, label: '10-year career', sub: 'starts at 55, retires at 65' },
+  ];
+
+  const tooltip = document.getElementById('tooltip');
+  function showTip(e, html) {
+    tooltip.innerHTML = html;
+    tooltip.classList.add('show');
+    const x = Math.min(e.clientX + 14, window.innerWidth - 240);
+    const y = e.clientY + 14;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+  }
+  function hideTip() { tooltip.classList.remove('show'); }
+
+  const sectionsHtml = careers.map(c => {
+    const rows = results.filter(r => r.startAge === c.startAge)
+      .sort((a,b) => a.multiple - b.multiple || a.payoutYears - b.payoutYears);
+
+    const tableRows = rows.map(r => {
+      const flags = [];
+      if (r.flooredBase) flags.push('baseline floored to minimum pension');
+      if (r.cappedEnh) flags.push('topped-up pension hit the maximum cap');
+      const potOk = r.depletedAtYear === null;
+      const pill = potOk
+        ? `<span class="pill good">survives, ends ${eurK(r.potEndReal)} (today's €)</span>`
+        : `<span class="pill critical">depletes in year ${r.depletedAtYear}</span>`;
+      return `<tr>
+        <td>${r.multiple}&times; SSM</td>
+        <td>${r.payoutYears}yr payout</td>
+        <td class="num-diff">${eur(r.diffM)}/mo${flags.length ? `<span class="flag">${flags.join(' · ')}</span>` : ''}</td>
+        <td>${eur(r.diffMReal)}/mo</td>
+        <td style="font-weight:700;color:${r.irrPension >= meta.ETF_RETURN ? 'var(--good)' : 'var(--ink)'}">${pct(r.irrPension,2)}</td>
+        <td>${r.irrEtf != null ? pct(r.irrEtf,2) : '—'}</td>
+        <td>${pill}</td>
+      </tr>`;
+    }).join('');
+
+    const maxIrr = Math.max(...rows.map(r => r.irrPension), meta.ETF_RETURN) * 1.15;
+    const bars = rows.map(r => {
+      const w = Math.max(2, (r.irrPension / maxIrr) * 100);
+      const refPos = (meta.ETF_RETURN / maxIrr) * 100;
+      const below = r.irrPension < meta.ETF_RETURN;
+      const tipHtml = `<strong>${r.multiple}&times; SSM, ${r.payoutYears}yr payout</strong><br>Voluntary-contribution IRR: ${pct(r.irrPension,2)}<br>ETF benchmark: ${pct(meta.ETF_RETURN,0)}`;
+      return `<div class="barrow" data-tip='${tipHtml.replace(/'/g,"&#39;")}'>
+        <span class="label">${r.multiple}&times; SSM &middot; ${r.payoutYears}yr</span>
+        <div class="bartrack">
+          <div class="barfill${below ? ' below' : ''}" style="width:${w}%"></div>
+          <div class="refline" style="left:${refPos}%"></div>
+        </div>
+        <span class="value">${pct(r.irrPension,1)}</span>
+      </div>`;
+    }).join('');
+
+    return `<section class="scenario-block">
+      <div class="scenario-head">
+        <h2>${c.label}</h2>
+        <span class="meta">${c.sub} &middot; retirement year ${rows[0].y65}</span>
+      </div>
+      <p class="section-intro">Each row tops up the assessment base to the 5&times;SSM ceiling every working year, compared with investing the identical after-tax amount instead.</p>
+      <div class="tablewrap">
+        <table class="results">
+          <thead><tr>
+            <th>Salary</th><th>Payout</th><th>Pension gain at 65 (nominal)</th><th>Pension gain (today's &euro;)</th>
+            <th>IRR &mdash; voluntary path</th><th>IRR &mdash; ETF path</th><th>ETF pot outcome</th>
+          </tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <h3>Effective annual return of the voluntary contribution, vs. the 7% ETF benchmark</h3>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="swatch pension"></span>Voluntary-contribution IRR</span>
+          <span class="legend-item"><span class="legend-line"></span>7% ETF benchmark</span>
+        </div>
+        <div class="bars">${bars}</div>
+      </div>
+    </section>`;
+  }).join('');
+
+  document.getElementById('scenarioSections').innerHTML = sectionsHtml;
+
+  document.querySelectorAll('.barrow').forEach(el => {
+    el.addEventListener('mousemove', (e) => showTip(e, el.dataset.tip));
+    el.addEventListener('mouseleave', hideTip);
+  });
+
+  const takeaways = [
+    `For the <strong>30-year career</strong>, the ETF path wins on IRR at every salary level and all three payout horizons &mdash; but the margin steadily narrows as the horizon lengthens: voluntary-contribution IRR rises from 4.7%&ndash;4.9% at a 20-year payout to 6.1%&ndash;6.3% at 40 years, closing in on the 7% benchmark. The ETF pot still never depletes, even at 40 years.`,
+    `The <strong>20-year career is where payout horizon matters most</strong>. At 20 or 30 years of payout, the ETF wins clearly (5.4%&ndash;6.8% IRR). Extend the payout to 40 years &mdash; a realistic horizon if retirement starts around 60&ndash;65 and life stretches toward 100 &mdash; and it flips: voluntary-contribution IRR reaches 7.0%&ndash;7.2%, matching or beating the ETF benchmark, and the ETF pot runs dry late in the payout (year 34&ndash;39 of 40) in all three salary scenarios.`,
+    `For the <strong>10-year career</strong>, the voluntary top-up wins at every horizon, and the gap widens as the horizon lengthens (9.2%&ndash;9.5% IRR at 20 years, up to 10.6%&ndash;10.9% at 40). The ETF pot always runs out around <strong>year 12</strong> regardless of the stated horizon &mdash; ten years of contributions builds a fixed amount of capital, so a longer nominal target doesn't change when it's exhausted, only how many years of shortfall follow.`,
+    `Longevity risk is the throughline connecting all three: it doesn't just extend both paths equally, it actively favours the pension, because <strong>a lifetime annuity gets more valuable the longer you live, at no extra cost to you</strong> &mdash; while a fixed pot gets harder to sustain the longer it has to last. The 20-year-career flip is the clearest evidence of this in the numbers.`,
+    `Affordability falls sharply as salary rises toward the ceiling: at <strong>2&times;SSM</strong> the top-up costs 17% of gross salary and produces the largest pension gain; by <strong>4&times;SSM</strong> the earner is already close to the 5&times;SSM ceiling on their actual salary alone, so the required top-up drops under 1% of income &mdash; but the pension gain shrinks correspondingly, since there's little headroom left to buy.`,
+  ];
+  document.getElementById('takeawaysList').innerHTML = takeaways.map((t,i) =>
+    `<div class="takeaway"><span class="idx">${String(i+1).padStart(2,'0')}</span><p>${t}</p></div>`).join('');
+
+  document.getElementById('longevityCallout').innerHTML = `
+    <h3>Why the payout horizon deserves its own line item</h3>
+    <p>Life expectancy has been rising for decades, and the trend isn't over. Someone retiring at 60&ndash;65 today has a real chance of living to 95&ndash;100 &mdash; a 35&ndash;40 year payout phase, not the 20&ndash;30 years most retirement comparisons default to.</p>
+    <div class="longevity-stats">
+      <div class="longevity-stat"><span class="n">20yr career, 20yr payout</span><span class="l">ETF wins &mdash; 5.4%&ndash;5.7% IRR, pot ends with a real surplus</span></div>
+      <div class="longevity-stat"><span class="n">20yr career, 40yr payout</span><span class="l">Flips &mdash; 7.0%&ndash;7.2% IRR, ETF pot depletes in year 34&ndash;39</span></div>
+    </div>
+    <p>Same career, same salary, same contributions &mdash; the only thing that changed is how long the money has to last. That's longevity risk in one comparison: it doesn't hit both paths equally, because one of them is built to not run out and the other has to be sized correctly in advance.</p>
+  `;
+})();
+</script>
+
+<footer class="site">
+  <p>LuxRente ist eine Schätzung und kein offizieller CCSS- oder CNAP-Bescheid. / LuxRente is an estimate and not an official CCSS or CNAP statement. / LuxRente est une estimation et non un avis officiel de la CCSS ou du CNAP.</p>
+  <p style="margin-top:8px"><a href="../index.html">← LuxRente</a> &nbsp;·&nbsp; © 2026 LuxRente</p>
+</footer>
+
+</body>
+</html>
