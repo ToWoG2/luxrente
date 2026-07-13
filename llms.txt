@@ -1,0 +1,20 @@
+# LuxRente — Luxembourg Pension Calculator
+
+> LuxRente reads a Luxembourg CCSS extrait de carrière and calculates accrued pension entitlements, an age-65 projection, early-retirement eligibility (57/60), the CNAP proportional pension under EU Regulation 883/2004, and the effect of voluntary contributions — entirely on-device.
+
+## App
+
+- [LuxRente on the App Store](https://apps.apple.com/lu/app/luxrente/id6784285182): iOS app, free with a one-time unlock for the full projection. No account, no data leaves the device.
+
+## Key topics covered
+
+- CCSS extrait de carrière: import as photo or PDF, or scan directly in-app; obtainable via selfservice.ccss.lu or by post from the CCSS.
+- Vorruhestand / early retirement / retraite anticipée (age 57 or 60), including required insurance months and the 2026 reform's extra-months rule.
+- CNAP proportional (pro-rata) pension for careers spanning multiple EU countries, under EU Regulation 883/2004 Art. 52.
+- AMVP voluntary pension contributions: tax deduction and pension impact.
+
+## Resources
+
+- [FAQ / Support](https://towog2.github.io/luxrente/#support): common questions in German, English, and French.
+- [ETF vs. voluntary CCSS contributions comparison](https://towog2.github.io/luxrente/marketing/etf-vs-freiwillige-beitraege.html): trilingual comparison by career length.
+- [Full ROI analysis](https://towog2.github.io/luxrente/marketing/roi-analyse-vollstaendig.html): 27-scenario methodology and tables (English).
