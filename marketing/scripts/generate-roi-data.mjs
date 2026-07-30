@@ -71,8 +71,13 @@ try {
 }
 
 const BBG_MONTHLY = BBG_ANNUAL / 12
-const SSM_QUALIFIE_MONTHLY_2026 = 3325.59 // June 2026 tranche — same figure the page already cites
-const SSM_MONTHLY_2026 = 2771.33          // non-qualifié, June 2026 tranche (general BBG basis)
+// SSM non-qualifié: back out of BBG_ANNUAL (= 5 × SSM non-qualifié × 12), which is already
+// tracked as a remote-config value — avoids a second hardcoded literal that could drift from it.
+const SSM_MONTHLY_2026 = BBG_ANNUAL / 12 / 5
+// SSM qualifié = SSM non-qualifié × 120% — a fixed statutory ratio (Art. 217 CT), not something
+// that changes independently. Verified across three tranche years (2024/2025/2026 SSM pairs all
+// resolve to exactly ×1.2), so deriving it here can't drift the way a second literal would.
+const SSM_QUALIFIE_MONTHLY_2026 = SSM_MONTHLY_2026 * 1.2
 
 // ── Pension math — ported verbatim from pensionEngine.js (last synced 2026-07-30) ──
 
