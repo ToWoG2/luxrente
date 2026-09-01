@@ -1,6 +1,6 @@
 # LuxRente — Luxembourg Pension Calculator
 
-> LuxRente reads a Luxembourg CCSS extrait de carrière and calculates accrued pension entitlements, an age-65 projection, early-retirement eligibility (57/60), the CNAP proportional pension under EU Regulation 883/2004, and the effect of voluntary contributions — entirely on-device.
+> LuxRente reads a Luxembourg CCSS extrait de carrière and calculates accrued pension entitlements, an age-65 projection, early-retirement eligibility (57/60), the CNAP proportional pension under EU Regulation 883/2004, and the effect of voluntary contributions. For careers that also ran through Germany it estimates the German statutory pension from the user's Entgeltpunkte and compares social contributions (health and long-term-care insurance) for retiring in Luxembourg vs. Germany. Entirely on-device.
 
 ## App
 
@@ -12,6 +12,8 @@
 - Vorruhestand / early retirement / retraite anticipée (age 57 or 60), including required insurance months and the 2026 reform's extra-months rule.
 - CNAP proportional (pro-rata) pension for careers spanning multiple EU countries, under EU Regulation 883/2004 Art. 52.
 - AMVP voluntary pension contributions: tax deduction and pension impact.
+- German statutory pension (deutsche Rente) from Entgeltpunkte: gross pension at the abschlagsfreie Regelaltersgrenze and at an earlier start date, with the Zugangsfaktor / Abschlag reduction for early retirement.
+- Social-contributions comparison (Sozialabgaben-Vergleich) on the combined Luxembourg + German pension: KVdR health insurance and Pflegeversicherung long-term-care contributions for Wohnsitz Luxemburg vs. Wohnsitz Deutschland, incl. the KVdR half-rate rule and the Beitragsbemessungsgrenze.
 
 ## Resources
 
